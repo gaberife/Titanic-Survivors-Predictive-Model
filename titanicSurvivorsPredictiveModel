@@ -8,12 +8,13 @@ from collections import Counter
 
 def preprocess(mutatedDF, sourceDF):
 
-    mutatedDF.loc[:, "Sex"] = mutatedDF.loc[:, "Sex"].map(lambda v: 0 if v=="male" else v)
-    mutatedDF.loc[:, "Sex"] = mutatedDF.loc[:, "Sex"].map(lambda v: 1 if v=="female" else v)
+    mutatedDF.loc[:, "Sex"] = mutatedDF.loc[:, "Sex"].map(lambda v: 0 if v=="male" else "female")
     
     mutatedDF.loc[:, 'Age'] = mutatedDF.loc[:, 'Age'].fillna(sourceDF.loc[:, 'Age'].median())
+    
     mutatedDF.loc[:, "Embarked"] = mutatedDF.loc[:, "Embarked"].map(
             lambda v: 0 if v=="C" else (1 if v=="Q" else (2 if v=="S" else v )))
+	    
     mutatedDF.loc[:, "Embarked"] = mutatedDF.apply(lambda row: mutatedDF.loc[:, "Embarked"].mode() 
     if np.isnan(row['Embarked']) else row['Embarked'], axis=1)
 	
